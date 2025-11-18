@@ -59,6 +59,6 @@ class SettingController extends Controller
         );
 
         // 3. Redirect kembali dengan pesan sukses
-        return redirect()->route('admin.settings.index')->with('success', 'Pengaturan berhasil disimpan!');
+        return redirect()->route('admin.products.index')->with('success', 'Pengaturan pajak & layanan berhasil disimpan!');
     }
 }

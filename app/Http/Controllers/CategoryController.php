@@ -1,10 +1,33 @@
 <?php
+namespace App\Http\Controllers\Admin;
 
-namespace App\Http\Controllers;
-
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Category;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
-    //
+    public function store(Request $request)
+    {
+        $request->validate(['name' => 'required|string|max:255|unique:categories']);
+        
+        Category::create([
+            'name' => $request->name,
+            'slug' => Str::slug($request->name)
+        ]);
+
+        return back()->with('success', 'Kategori berhasil ditambahkan.');
+    }
+
+    public function destroy(Category $category)
+    {
+        // Opsional: Cek apakah kategori sedang dipakai produk
+        if ($category->products()->count() > 0) {
+            return back()->with('error', 'Gagal! Kategori ini sedang dipakai oleh produk.');
+        }
+
+        $category->delete();
+        return back()->with('success', 'Kategori berhasil dihapus.');
+    }
 }

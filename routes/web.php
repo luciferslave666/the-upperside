@@ -49,4 +49,6 @@ Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dash
     Route::resource('users', UserManagementController::class);
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
+    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+    Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 });

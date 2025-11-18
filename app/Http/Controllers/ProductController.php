@@ -8,6 +8,7 @@ use Illuminate\View\View;
 use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\RedirectResponse;
+use App\Models\Setting;
 
 
 class ProductController extends Controller
@@ -18,12 +19,16 @@ class ProductController extends Controller
     public function index(): View
     {
         // 1. Ambil semua produk, urutkan dari yang terbaru
-        // Kita juga ambil 'category' untuk menghindari N+1 query
         $products = Product::with('category')->latest()->get();
+        $tax = Setting::firstOrCreate(['key' => 'tax_percent'], ['value' => '11']);
+        $service = Setting::firstOrCreate(['key' => 'service_percent'], ['value' => '5']);
 
         // 2. Kirim data produk ke view
         return view('admin.products.index', [
-            'products' => $products
+            'products' => $products,
+            'tax' => $tax,
+            'service' => $service,
+
         ]);
     }
 
